@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="rot">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>GILDED ROT · decay & opulence · crumbling relics</title>
+  <!-- Typography: decadent serif + faded sans -->
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* THEME: ROT (decayed gold + withered luxury) */
+    :root[data-theme="rot"] {
+      --bg: #0f0c0a;
+      --surface: #1c1714;
+      --surface-elevated: #2c2420;
+      --text: #e8dcd0;
+      --text-soft: #b8a898;
+      --text-muted: #6a5a4e;
+      --accent: #bf8f6e;
+      --accent-glow: #e2b48c;
+      --accent-deep: #9a6b4a;
+      --accent-subtle: #3d2c24;
+      --border-light: #8a6f58;
+      --shadow-sm: 0 12px 28px -8px rgba(0,0,0,0.8);
+      --shadow-lg: 0 25px 45px -12px rgba(0,0,0,1);
+      --transition: 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      --radius-card: 20px 4px 20px 4px;
+      --grid-gap: 1.8rem;
+      --font-display: 'Libre Baskerville', serif;
+    }
+
+    /* second theme: "moss" — faded bloom + weathered stone */
+    :root[data-theme="moss"] {
+      --bg: #eae3d8;
+      --surface: #fffaf2;
+      --surface-elevated: #fdf5ea;
+      --text: #3a322c;
+      --text-soft: #9a887a;
+      --text-muted: #d1c3b6;
+      --accent: #8f7a6b;
+      --accent-glow: #bba28e;
+      --accent-deep: #705e50;
+      --accent-subtle: #ede3da;
+      --border-light: #d9cbbc;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      scroll-behavior: smooth;
+      font-weight: 400;
+      line-height: 1.45;
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--surface);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 10px;
+    }
+
+    /* header — decay gate */
+    .rot-header {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      background: rgba(15, 12, 10, 0.94);
+      backdrop-filter: blur(16px);
+      border-bottom: 2px solid var(--accent);
+      transition: var(--transition);
+    }
+    [data-theme="moss"] .rot-header {
+      background: rgba(234, 227, 216, 0.96);
+      border-bottom-color: var(--accent);
+    }
+
+    .nav-rot {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0.7rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .brand-rot {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--accent-glow);
+      text-transform: uppercase;
+      border-left: 4px solid var(--accent);
+      padding-left: 14px;
+    }
+    .brand-rot small {
+      font-size: 0.45rem;
+      font-weight: 400;
+      letter-spacing: 3px;
+      margin-left: 8px;
+      color: var(--text-soft);
+      font-family: monospace;
+    }
+
+    .nav-rot-links {
+      display: flex;
+      gap: 2rem;
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+    }
+    .nav-rot-links a {
+      color: var(--text-soft);
+      text-decoration: none;
+      transition: 0.2s;
+    }
+    .nav-rot-links a:hover {
+      color: var(--accent-glow);
+      border-bottom: 1px solid;
+      padding-bottom: 3px;
+    }
+
+    .rot-utils {
+      display: flex;
+      gap: 1.6rem;
+      align-items: center;
+    }
+    #themeToggleRot {
+      background: var(--accent-subtle);
+      border: none;
+      padding: 5px 12px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text);
+      font-family: monospace;
+      border-radius: 30px;
+    }
+    .rot-cart {
+      position: relative;
+      cursor: pointer;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+    }
+    .cart-count-rot {
+      background: var(--accent);
+      color: #0f0c0a;
+      font-size: 0.55rem;
+      font-weight: 800;
+      border-radius: 30px;
+      width: 18px;
+      height: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: -8px;
+      right: -14px;
+    }
+
+    /* hero — gilded ruin */
+    .hero-rot {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      background-image: url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=2071&auto=format&fit=crop');
+      background-size: cover;
+      background-position: 50% 25%;
+    }
+    .hero-rot::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #0f0c0acc 0%, #1c1714dd 100%);
+      z-index: 1;
+    }
+    .hero-rot-content {
+      position: relative;
+      z-index: 2;
+      max-width: 640px;
+      padding: 0 6%;
+    }
+    .hero-rot-badge {
+      font-size: 0.55rem;
+      letter-spacing: 6px;
+      font-weight: 400;
+      margin-bottom: 1rem;
+      color: var(--accent-glow);
+      border-left: 4px solid var(--accent);
+      padding-left: 14px;
+      font-family: monospace;
+    }
+    .hero-rot-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 10vw, 5rem);
+      font-weight: 700;
+      line-height: 1.0;
+      margin-bottom: 0.8rem;
+      color: #f2e8da;
+      letter-spacing: -0.5px;
+      text-shadow: 2px 2px 12px rgba(0,0,0,0.5);
+    }
+    .hero-rot-offer {
+      font-size: 0.65rem;
+      font-weight: 500;
+      margin-bottom: 2rem;
+      background: rgba(0, 0, 0, 0.6);
+      display: inline-block;
+      padding: 0.4rem 1.2rem;
+      backdrop-filter: blur(4px);
+      font-family: monospace;
+      border-radius: 40px;
+    }
+
+    .btn-rot {
+      background: var(--accent);
+      border: none;
+      padding: 0.8rem 2.2rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-block;
+      text-decoration: none;
+      color: #0f0c0a;
+      font-family: monospace;
+      border-radius: 40px;
+    }
+    .btn-rot:hover {
+      background: var(--accent-glow);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(191, 143, 110, 0.4);
+    }
+
+    /* collection header */
+    .rot-collection {
+      max-width: 1440px;
+      margin: 3rem auto 0.5rem auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 0.7rem;
+    }
+    .rot-collection h2 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    .rot-collection p {
+      color: var(--accent-glow);
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      font-family: monospace;
+    }
+
+    /* product grid — decay archive */
+    .grid-rot {
+      max-width: 1440px;
+      margin: 2rem auto 5rem auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--grid-gap);
+    }
+
+    .rot-card {
+      background: var(--surface);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      transition: var(--transition);
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-sm);
+    }
+    .rot-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent-glow);
+      box-shadow: var(--shadow-lg);
+    }
+    .rot-media {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      background: var(--surface-elevated);
+      filter: sepia(15%);
+    }
+    .rot-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .rot-card:hover .rot-media img {
+      transform: scale(1.04);
+      filter: sepia(0%);
+    }
+    .rot-quick {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(28, 23, 20, 0.96);
+      backdrop-filter: blur(8px);
+      padding: 0.8rem;
+      opacity: 0;
+      transition: 0.2s;
+      text-align: center;
+    }
+    .rot-card:hover .rot-quick {
+      opacity: 1;
+    }
+    .rot-quick button {
+      background: var(--accent);
+      border: none;
+      width: 85%;
+      padding: 0.6rem;
+      font-size: 0.55rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: 0.2s;
+      color: #0f0c0a;
+      font-family: monospace;
+      border-radius: 40px;
+    }
+    .rot-quick button:hover {
+      background: white;
+      color: #2c2420;
+    }
+
+    .rot-info {
+      padding: 1rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .rot-detail h4 {
+      font-size: 0.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--accent-glow);
+      letter-spacing: 2px;
+    }
+    .rot-detail h3 {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 500;
+      margin-top: 5px;
+    }
+    .rot-price {
+      text-align: right;
+    }
+    .rot-current {
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    .rot-old {
+      font-size: 0.65rem;
+      text-decoration: line-through;
+      color: var(--text-muted);
+      margin-left: 0.3rem;
+    }
+
+    /* cart — decay coffer */
+    .cart-overlay-rot {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(0, 0, 0, 0.96);
+      backdrop-filter: blur(24px);
+      visibility: hidden;
+      opacity: 0;
+      transition: 0.2s;
+    }
+    .cart-overlay-rot.active {
+      visibility: visible;
+      opacity: 1;
+    }
+    .cart-rot-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100%;
+      max-width: 520px;
+      height: 100vh;
+      background: var(--surface);
+      border-left: 3px solid var(--accent);
+      box-shadow: var(--shadow-lg);
+      z-index: 2001;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      display: flex;
+      flex-direction: column;
+    }
+    .cart-overlay-rot.active .cart-rot-panel {
+      transform: translateX(0);
+    }
+    .cart-rot-header {
+      padding: 1.4rem;
+      border-bottom: 1px solid var(--accent);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cart-rot-header h3 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--accent-glow);
+    }
+    .close-rot-cart {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+    .cart-rot-items {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .rot-cart-item {
+      display: flex;
+      gap: 1rem;
+      padding: 0.8rem;
+      background: var(--surface-elevated);
+      border-left: 3px solid var(--accent);
+      position: relative;
+      border-radius: 18px;
+    }
+    .rot-cart-img {
+      width: 70px;
+      height: 85px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+    .rot-cart-details {
+      flex: 1;
+    }
+    .rot-cart-name {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    .rot-cart-price {
+      font-size: 0.7rem;
+      color: var(--accent-glow);
+      margin-top: 4px;
+    }
+    .rot-cart-qty {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .rot-qty-btn {
+      background: var(--accent-subtle);
+      border: none;
+      width: 26px;
+      height: 26px;
+      cursor: pointer;
+      font-weight: 800;
+      color: var(--text);
+      font-family: monospace;
+      border-radius: 30px;
+    }
+    .rot-qty-btn:hover {
+      background: var(--accent);
+      color: #111;
+    }
+    .rot-remove {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+    .cart-rot-footer {
+      padding: 1.5rem;
+      border-top: 2px solid var(--accent);
+      background: var(--surface);
+    }
+    .rot-total {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      font-family: monospace;
+    }
+    .rot-checkout {
+      width: 100%;
+      background: var(--accent);
+      border: none;
+      padding: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: 0.2s;
+      color: #0f0c0a;
+      font-family: monospace;
+      border-radius: 40px;
+    }
+    .rot-checkout:hover {
+      background: var(--accent-glow);
+      transform: scale(0.98);
+    }
+    .empty-rot-cart {
+      text-align: center;
+      color: var(--text-soft);
+      padding: 2rem;
+      font-size: 0.7rem;
+      font-family: monospace;
+    }
+
+    footer {
+      background: var(--surface-elevated);
+      margin-top: 2rem;
+      padding: 2rem 1.5rem;
+      border-top: 1px solid var(--accent);
+    }
+    .footer-rot {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .footer-rot-brand {
+      font-family: var(--font-display);
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: var(--accent-glow);
+    }
+    .footer-rot-regions {
+      font-size: 0.5rem;
+      letter-spacing: 3px;
+      color: var(--text-soft);
+      margin: 0.6rem 0 1rem;
+      font-family: monospace;
+    }
+
+    /* modal — decay invitation */
+    .modal-rot {
+      position: fixed;
+      inset: 0;
+      z-index: 2200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.98);
+      backdrop-filter: blur(28px);
+      transition: opacity 0.25s;
+    }
+    .modal-rot-block {
+      background: var(--surface);
+      max-width: 520px;
+      width: 100%;
+      border-top: 5px solid var(--accent);
+      padding: 2rem 2rem 2.2rem;
+      position: relative;
+      text-align: center;
+      box-shadow: 0 35px 45px rgba(0,0,0,0.9);
+      border-radius: 48px 12px 48px 12px;
+    }
+    .modal-rot-close {
+      position: absolute;
+      top: 1rem;
+      right: 1.2rem;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+    .modal-rot-icon {
+      width: 70px;
+      height: 70px;
+      background: rgba(191, 143, 110, 0.15);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+      border: 1px solid var(--accent);
+      color: var(--accent-glow);
+      border-radius: 50%;
+    }
+    .modal-rot-title {
+      font-family: var(--font-display);
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--accent-glow);
+      margin-bottom: 0.2rem;
+    }
+    .modal-rot-desc {
+      color: var(--text-soft);
+      line-height: 1.5;
+      font-size: 0.85rem;
+      margin: 0.8rem 0;
+    }
+    .modal-rot-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.6rem;
+    }
+    .btn-rot-primary {
+      background: var(--accent);
+      border: none;
+      padding: 0.7rem 2rem;
+      font-weight: 700;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      color: #0f0c0a;
+      font-family: monospace;
+      border-radius: 40px;
+    }
+    .btn-rot-secondary {
+      background: transparent;
+      border: 1px solid var(--accent);
+      padding: 0.7rem 1.8rem;
+      font-weight: 500;
+      font-size: 0.7rem;
+      cursor: pointer;
+      color: var(--text);
+      font-family: monospace;
+      border-radius: 40px;
+    }
+    .modal-fade-rot {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      display: none;
+    }
+
+    @media (max-width: 780px) {
+      .nav-rot { flex-direction: column; gap: 0.6rem; }
+      .grid-rot { gap: 1rem; }
+    }
+  </style>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SBJZ7C7VV0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-SBJZ7C7VV0');
+  </script>
+</head>
+<body>
+
+<!-- entry modal: GILDED ROT invitation -->
+<div id="entryModalRot" class="modal-rot">
+  <div class="modal-rot-block">
+    <button id="closeRotModal" class="modal-rot-close"><i class="fas fa-skull"></i></button>
+    <div class="modal-rot-icon"><i class="fas fa-crown"></i></div>
+    <h2 class="modal-rot-title">GILDED ROT</h2>
+    <p class="modal-rot-desc">Decay & opulence · crumbling relics · gilt-thorn armor. Garments forged from fallen empires and withered grandeur, kissed by rust and ruin.</p>
+    <div class="modal-rot-buttons">
+      <button id="enterRotBtn" class="btn-rot-primary">💀 ENTER THE RUIN</button>
+      <button id="laterRotBtn" class="btn-rot-secondary">WITHER LATER</button>
+    </div>
+  </div>
+</div>
+
+<header class="rot-header">
+  <div class="nav-rot">
+    <div class="brand-rot">GILDED ROT<small>· DECAY</small></div>
+    <nav class="nav-rot-links">
+      <a href="#shopRot">RUIN VAULT</a>
+      <a href="#shopRot">CRUMBLING RELICS</a>
+      <a href="#shopRot">GILT THORNS</a>
+      <a href="#">ROT CRYPT</a>
+    </nav>
+    <div class="rot-utils">
+      <button id="themeToggleRot">🍂 MOSS MODE</button>
+      <div class="rot-cart" id="cartIconRot">
+        <i class="fas fa-hourglass-half"></i>
+        <span class="cart-count-rot" id="cartCountRot">0</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero-rot">
+    <div class="hero-rot-content">
+      <div class="hero-rot-badge">DECAY & OPULENCE · CRUMBLING RELICS · GILT THORNS</div>
+      <h1 class="hero-rot-title">GILDED ROT</h1>
+      <div class="hero-rot-offer">first decay: <strong>15% off</strong> your first crumbling relic</div>
+      <a href="#shopRot" class="btn-rot">ENTER THE RUIN →</a>
+    </div>
+  </section>
+
+  <div class="rot-collection" id="shopRot">
+    <h2>Ruin Vault · Crumbling Relics & Gilt-thorn Artifacts</h2>
+    <p>12 decay goods</p>
+  </div>
+
+  <div class="grid-rot" id="productGridRot"></div>
+</main>
+
+<footer>
+  <div class="footer-rot">
+    <div class="footer-rot-brand">GILDED ROT</div>
+    <div class="footer-rot-regions">RUIN VAULT · CRUMBLING RELICS · THORN ARMORY</div>
+    <p style="font-size:0.55rem; opacity:0.7;">© 2026 GILDED ROT — forged from fallen empires and withered grandeur, kissed by rust and ruin.</p>
+  </div>
+</footer>
+
+<!-- CART SIDEBAR -->
+<div id="cartOverlayRot" class="cart-overlay-rot">
+  <div class="cart-rot-panel">
+    <div class="cart-rot-header">
+      <h3>💀 DECAY COFFER</h3>
+      <button class="close-rot-cart" id="closeCartRot"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-rot-items" id="cartItemsRot">
+      <div class="empty-rot-cart">Your coffer is empty.<br>Add crumbling relics.</div>
+    </div>
+    <div class="cart-rot-footer" id="cartFooterRot" style="display: none;">
+      <div class="rot-total"><span>Total (USD)</span><span id="cartTotalRot">$0</span></div>
+      <button class="rot-checkout" id="checkoutRotBtn">🥀 CONSECRATE THE RUIN</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // GILDED ROT product catalog — decay & opulence theme
+  const rotProducts = [
+    { id: 9901, name: "Gilt Shroud", category: "DECAY", original: 899, price: 764, img: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=687&auto=format&fit=crop", alt: "shroud" },
+    { id: 9902, name: "Rust Tunic", category: "CRUMBLE", original: 348, price: 295, img: "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?q=80&w=687&auto=format&fit=crop", alt: "tunic" },
+    { id: 9903, name: "Withered Shirt", category: "LAYER", original: 595, price: 505, img: "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?q=80&w=715&auto=format&fit=crop", alt: "shirt" },
+    { id: 9904, name: "Fallen Pants", category: "BOTTOMS", original: 480, price: 408, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600&auto=format&fit=crop", alt: "pants" },
+    { id: 9905, name: "Decay Anorak", category: "OUTER", original: 805, price: 684, img: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=600&auto=format&fit=crop", alt: "anorak" },
+    { id: 9906, name: "Oxidized Vest", category: "VEST", original: 435, price: 369, img: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?q=80&w=687&auto=format&fit=crop", alt: "vest" },
+    { id: 9907, name: "Corrosion Smock", category: "SMOCK", original: 1090, price: 926, img: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=687&auto=format&fit=crop", alt: "smock" },
+    { id: 9908, name: "Empire Coat", category: "COAT", original: 1455, price: 1236, img: "https://images.unsplash.com/photo-1598032895397-b9472444bf93?q=80&w=2070&auto=format&fit=crop", alt: "coat" },
+    { id: 9909, name: "Ruin Cargo", category: "BOTTOMS", original: 565, price: 480, img: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=600&auto=format&fit=crop", alt: "cargo" },
+    { id: 9910, name: "Ghost Hood", category: "HOODIE", original: 370, price: 314, img: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=764&auto=format&fit=crop", alt: "hood" },
+    { id: 9911, name: "Moth Duster", category: "OUTER", original: 1870, price: 1589, img: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?q=80&w=688&auto=format&fit=crop", alt: "duster" },
+    { id: 9912, name: "Patina Shacket", category: "SHIRT", original: 675, price: 573, img: "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?q=80&w=687&auto=format&fit=crop", alt: "shacket" }
+  ];
+
+  let cartRot = [];
+  const cartOverlayRotDiv = document.getElementById('cartOverlayRot');
+  const cartRotIcon = document.getElementById('cartIconRot');
+  const closeCartRotBtn = document.getElementById('closeCartRot');
+  const cartRotContainer = document.getElementById('cartItemsRot');
+  const cartRotFooter = document.getElementById('cartFooterRot');
+  const cartRotTotalSpan = document.getElementById('cartTotalRot');
+  const cartRotCountSpan = document.getElementById('cartCountRot');
+
+  function persistRotCart() { localStorage.setItem('GILDED_ROT_CART', JSON.stringify(cartRot)); }
+  function loadRotCart() {
+    const saved = localStorage.getItem('GILDED_ROT_CART');
+    if (saved) cartRot = JSON.parse(saved);
+    renderRotCart();
+    updateRotCount();
+  }
+  function updateRotCount() { cartRotCountSpan.innerText = cartRot.reduce((sum,i)=>sum+i.qty,0); }
+
+  function renderRotCart() {
+    if (!cartRotContainer) return;
+    if (cartRot.length === 0) {
+      cartRotContainer.innerHTML = '<div class="empty-rot-cart">Your coffer is empty.<br>Add crumbling relics.</div>';
+      cartRotFooter.style.display = 'none';
+      updateRotCount(); persistRotCart(); return;
+    }
+    cartRotFooter.style.display = 'block';
+    let html = ''; let total = 0;
+    cartRot.forEach(item => {
+      total += item.price * item.qty;
+      html += `<div class="rot-cart-item" data-id="${item.id}">
+          <img class="rot-cart-img" src="${item.img}" alt="${item.name}">
+          <div class="rot-cart-details">
+            <div class="rot-cart-name">${item.name}</div>
+            <div class="rot-cart-price">$${item.price.toLocaleString()}</div>
+            <div class="rot-cart-qty">
+              <button class="rot-qty-dec" data-id="${item.id}">−</button>
+              <span>${item.qty}</span>
+              <button class="rot-qty-inc" data-id="${item.id}">+</button>
+            </div>
+          </div>
+          <button class="rot-remove" data-id="${item.id}"><i class="fas fa-trash-alt"></i></button>
+        </div>`;
+    });
+    cartRotContainer.innerHTML = html;
+    cartRotTotalSpan.innerText = `$${total.toLocaleString()}`;
+    document.querySelectorAll('.rot-qty-dec').forEach(btn => btn.addEventListener('click', () => updateRotQty(parseInt(btn.dataset.id), -1)));
+    document.querySelectorAll('.rot-qty-inc').forEach(btn => btn.addEventListener('click', () => updateRotQty(parseInt(btn.dataset.id), 1)));
+    document.querySelectorAll('.rot-remove').forEach(btn => btn.addEventListener('click', () => removeRotItem(parseInt(btn.dataset.id))));
+    updateRotCount(); persistRotCart();
+  }
+  function updateRotQty(pid, delta) {
+    const idx = cartRot.findIndex(i=>i.id===pid);
+    if(idx !== -1){
+      const nq = cartRot[idx].qty + delta;
+      if(nq <= 0) cartRot.splice(idx,1);
+      else cartRot[idx].qty = nq;
+      renderRotCart();
+    }
+  }
+  function removeRotItem(pid){ cartRot = cartRot.filter(i=>i.id!==pid); renderRotCart(); }
+  function addToRotCart(pid){
+    const prod = rotProducts.find(p=>p.id===pid);
+    if(!prod) return;
+    const existing = cartRot.find(i=>i.id===pid);
+    if(existing) existing.qty += 1;
+    else cartRot.push({id:prod.id, name:prod.name, price:prod.price, qty:1, img:prod.img});
+    renderRotCart();
+    const btn = document.querySelector(`.rot-add-${pid}`);
+    if(btn){ let old = btn.innerText; btn.innerText="🥀 ROTTEN"; setTimeout(()=>btn.innerText=old,700); }
+    cartOverlayRotDiv.classList.add('active');
+  }
+
+  function renderRotProducts() {
+    const container = document.getElementById('productGridRot');
+    if(!container) return;
+    container.innerHTML = '';
+    rotProducts.forEach(p => {
+      const disc = Math.round(((p.original-p.price)/p.original)*100);
+      const card = document.createElement('div');
+      card.className = 'rot-card';
+      card.innerHTML = `
+        <div class="rot-media">
+          <img src="${p.img}" alt="${p.alt||p.name}" loading="lazy">
+          <div class="rot-quick"><button class="rot-add-${p.id} add-rot-btn" data-id="${p.id}">💀 ADD TO COFFER</button></div>
+        </div>
+        <div class="rot-info">
+          <div class="rot-detail"><h4>${p.category}</h4><h3>${p.name}</h3></div>
+          <div class="rot-price"><span class="rot-current">$${p.price.toLocaleString()}</span><span class="rot-old">$${p.original.toLocaleString()}</span><span style="font-size:0.55rem;color:var(--accent-glow);display:block;text-align:right;">-${disc}%</span></div>
+        </div>`;
+      container.appendChild(card);
+    });
+    document.querySelectorAll('.add-rot-btn').forEach(btn => btn.addEventListener('click', (e)=>{ e.preventDefault(); addToRotCart(parseInt(btn.dataset.id)); }));
+  }
+
+  function initThemeRot() {
+    const stored = localStorage.getItem('GILDED_ROT_theme');
+    let theme = stored || 'rot';
+    document.documentElement.setAttribute('data-theme', theme);
+    const toggle = document.getElementById('themeToggleRot');
+    if(toggle) toggle.textContent = theme === 'rot' ? '🍂 MOSS MODE' : '💀 ROT MODE';
+  }
+  function toggleThemeRot() {
+    const curr = document.documentElement.getAttribute('data-theme');
+    const next = curr === 'rot' ? 'moss' : 'rot';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('GILDED_ROT_theme', next);
+    const toggleBtn = document.getElementById('themeToggleRot');
+    if(toggleBtn) toggleBtn.textContent = next === 'rot' ? '🍂 MOSS MODE' : '💀 ROT MODE';
+  }
+
+  // modal handlers
+  const modalRotElem = document.getElementById('entryModalRot');
+  const enterRot = document.getElementById('enterRotBtn'), laterRot = document.getElementById('laterRotBtn'), closeRotModalBtn = document.getElementById('closeRotModal');
+  function closeRotModalFunc() {
+    if(modalRotElem){
+      modalRotElem.classList.add('modal-fade-rot');
+      setTimeout(()=>modalRotElem.style.display='none',200);
+    }
+  }
+  if(enterRot) enterRot.addEventListener('click', closeRotModalFunc);
+  if(laterRot) laterRot.addEventListener('click', closeRotModalFunc);
+  if(closeRotModalBtn) closeRotModalBtn.addEventListener('click', closeRotModalFunc);
+  if(modalRotElem) modalRotElem.addEventListener('click',(e)=>{ if(e.target===modalRotElem) closeRotModalFunc(); });
+
+  cartRotIcon?.addEventListener('click',()=>cartOverlayRotDiv.classList.add('active'));
+  closeCartRotBtn?.addEventListener('click',()=>cartOverlayRotDiv.classList.remove('active'));
+  cartOverlayRotDiv?.addEventListener('click',(e)=>{ if(e.target===cartOverlayRotDiv) cartOverlayRotDiv.classList.remove('active'); });
+  document.getElementById('checkoutRotBtn')?.addEventListener('click',()=>{ alert('Gilded Rot seals your decay offering. Your crumbling relics shimmer with rust and fallen opulence.'); cartRot=[]; renderRotCart(); cartOverlayRotDiv.classList.remove('active'); });
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{ a.addEventListener('click',function(e){ const hash=this.getAttribute('href'); if(hash==="#") return; const sec=document.querySelector(hash); if(sec){ e.preventDefault(); sec.scrollIntoView({behavior:'smooth'}); } }); });
+
+  renderRotProducts();
+  initThemeRot();
+  loadRotCart();
+  document.getElementById('themeToggleRot')?.addEventListener('click', toggleThemeRot);
+</script>
+</body>
+</html>
